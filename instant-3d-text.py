@@ -15,17 +15,16 @@ def delete_all():
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.object.delete()
 
-def write_text(text, size, extrude_depth):
+def write_text(text, size=SIZE, extrude_depth=EXTRUDE_DEPTH, FONT_TYPE="FONT"):
     # These ones don't need to be modified
     POS = (0, 0, 0)
     SCALE = (size, size, 1)
-    FONT_TYPE = "FONT"
     
     delete_all()
     
     text_data = bpy.data.curves.new(type=FONT_TYPE ,name="Instant3DText_text")
-    text_data.body = TEXT
-    text_data.extrude = EXTRUDE_DEPTH
+    text_data.body = text
+    text_data.extrude = extrude_depth
     
     text_obj = bpy.data.objects.new(name="Instant3DText_object", object_data=text_data)
     
@@ -45,7 +44,9 @@ def main():
         lines = src.splitlines()
         
         for line in lines:
-            write_text(line, SIZE, EXTRUDE_DEPTH)
+            write_text(line)
+            
+        delete_all()
 
 if __name__ == "__main__":
     main()
