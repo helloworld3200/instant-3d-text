@@ -15,7 +15,7 @@
 
 4. For the text you actually want to create, create a `source.txt` file in the folder you chose for the models to be saved in - each line is an individual object. For example, if you have `Hello World` this will count as one object but  
  `Hello`  
- `World` will be 2 objects.
+ `World` will be 2 objects. I have included an `example-source.txt` file with all uppercase/lowercase letters of the alphabet and all digits from 0-9 for convenience.
 
 4. Run the program and enjoy!
 
@@ -27,6 +27,7 @@ Then, run the command: `blender -b -P "instant-3d-text.py"`
 ### Limitations
 
 - Currently, this only exports to an OBJ format.
-- This does not support different fonts or italic/bold.
+- This does not support different fonts
+- It can't make italic/bold text.
 
-If people actually use this project, I might add these features eventually. 
+If people actually use this project, I might add these features eventually.
