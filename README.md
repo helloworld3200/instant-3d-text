@@ -29,5 +29,6 @@ Then, run the command: `blender -b -P "instant-3d-text.py"`
 - Currently, this only exports to an OBJ format.
 - This does not support different fonts
 - It can't make italic/bold text.
+- You can only include text that is also an acceptable filename.
 
 If people actually use this project, I might add these features eventually.
