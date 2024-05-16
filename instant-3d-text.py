@@ -1,6 +1,5 @@
 import bpy
 import os
-from subprocess import run
 from re import search
 
 # Modify these variables
@@ -14,7 +13,7 @@ REMOVE_MTL = True
 
 # Shouldn't need to change these
 TEXT_SOURCE = "source.txt"
-MATCH_ENDS_REGEX = ".*_\\d+\.obj$"
+MATCH_ENDS_REGEX = ".*_\\d+\\.obj$"
 
 def remove_file_with_ext(path: str, ext: str) -> None:
     index = len(ext)
@@ -55,14 +54,17 @@ def check_duplicate_filenames(path: str, target: str) -> int:
     return duplicates_len
 
 def delete_all() -> None:
-    bpy.ops.object.select_all(action='DESELECT')
-    bpy.ops.object.select_all(action='SELECT')
+    select_all()
     bpy.ops.object.delete()
+
+def select_all() -> None:
+    bpy.ops.object.select_all(action='DESELECT')
+    bpy.ops.object.select_all(action='SELECT')  
 
 def write_text(text: str, size: int=SIZE, extrude_depth: float=EXTRUDE_DEPTH, font_type: str="FONT", output_path: str=OUTPUT_PATH, remove_mtl: str=REMOVE_MTL) -> None:
     # These ones don't need to be modified
-    POS = (0, 0, 0)
-    SCALE = (size, size, 1)
+    POS = [0, 0, 0]
+    SCALE = [size, size, 1]
     
     delete_all()
     
@@ -73,11 +75,13 @@ def write_text(text: str, size: int=SIZE, extrude_depth: float=EXTRUDE_DEPTH, fo
     text_obj = bpy.data.objects.new(name="Instant3DText_object", object_data=text_data)
     
     bpy.context.scene.collection.objects.link(text_obj)
-    text_obj.data = text_data
     
+    select_all()
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
+
     text_obj.scale = SCALE
     text_obj.location = POS
-    
+
     # Optional - for debugging purposes
     bpy.context.view_layer.update()
     
@@ -88,7 +92,7 @@ def write_text(text: str, size: int=SIZE, extrude_depth: float=EXTRUDE_DEPTH, fo
         remove_file_with_ext(output_path, ".mtl")
     
 def main() -> None:
-    with open(os.path.join(OUTPUT_PATH, TEXT_SOURCE), "r") as src:
+    with open(os.path.join(OUTPUT_PATH, TEXT_SOURCE), "r", encoding="utf-8") as src:
         lines = src.read().splitlines()
         
         for line in lines:
@@ -98,4 +102,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
